@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>RPM Blinker</title>
+    <link rel="icon" href="https://www.ljplus.ru/img4/2/0/202bus/peso4enka1.jpg"><!--Это иконка вкладки, можешь удалить или оставить, похуй, просто глянь че за картинку я тут добавил :)-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Стили страницы -->
+    <style>
+        :root {
+            --main-color: #1c222a;
+            --submain-color: #252c36;
+            --additional-color: #6a655d;
+            --text-color: #dcdcdc;
+            --additional-text-color: #808080;
+            --details-color: #edb021;
+            --additional-details-color: #825b00;
+        }
+        body {
+            font-family: "Raleway", sans-serif;
+            font-size: 2.8em;
+            color: var(--text-color);
+            background: var(--main-color);
+            padding-bottom: 2em;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+        }
+        .preferences-header {
+            width: 100%;
+            color: var(--details-color);
+            text-align: center;
+        }
+        .group__header {
+            border-top: 1px solid var(--additional-details-color);
+            display: flex;
+            justify-content: center;
+        }
+        .group__header h3 {
+            margin: 40px 0 0 0;
+        }
+        h1 {
+            text-shadow: 5px 5px 50px var(--additional-details-color);
+        }
+        .equipment-preferences {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+        }
+        .equipment-preferences__input-number-pair {
+            display: flex;
+            margin-top: 40px;
+        }
+        .equipment-preferences__input-pair__input-number {
+            margin-left: auto;
+            width: 35%;
+            background: var(--submain-color);
+            border-radius: 10px;
+            outline: none;
+            font-size: 1em;
+            color: var(--text-color);
+            text-align: center;
+        }
+        .equipment-preferences__input-pair__input-color {
+            margin-left: auto;
+            border-radius: 10px;
+            outline: none;
+            width: 5em;
+            height: 5em;
+        }
+        .equipment-preferences__input-slider-pair {
+            display: flex;
+            flex-direction: column;
+            margin-top: 40px;
+        }
+        .equipment-preferences__input-pair__input-info {
+            display: flex;
+            margin-bottom: 16px;
+        }
+        .equipment-preferences__input-pair__value {
+            margin-left: auto;
+        }
+        .equipment-preferences__input-pair__input:not(.color-picker) {
+            width: 100%;
+        }
+        /*Стилизация слайдера*/
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            width: 25rem;
+        }
+
+        /* Removes default focus */
+        input[type="range"]:focus {
+            outline: none;
+        }
+
+        /******** Chrome, Safari, Opera and Edge Chromium styles ********/
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            width: 25rem;
+        }
+
+        /* Removes default focus */
+        input[type="range"]:focus {
+            outline: none;
+        }
+
+        /******** Chrome, Safari, Opera and Edge Chromium styles ********/
+        /* slider track */
+        input[type="range"]::-webkit-slider-runnable-track {
+            background-color: var(--details-color);
+            border-radius: 0.5rem;
+            height: 1.5em;
+        }
+
+        /* slider thumb */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            margin-top: -0.6em; /* Centers thumb on the track */
+            background-color: #805b02;
+            border-radius: 90px;
+            border: 1px solid var(--main-color);
+            height: 3em;
+            width: 3em;
+        }
+
+        input[type="range"]:focus::-webkit-slider-thumb {
+            outline: 3px solid #805b02;
+            outline-offset: 0.125rem;
+        }
+
+        /*********** Firefox styles ***********/
+        /* slider track */
+        input[type="range"]::-moz-range-track {
+            background-color: var(--details-color);
+            border-radius: 0.5rem;
+            height: 1.5em;
+        }
+
+        /* slider thumb */
+        input[type="range"]::-moz-range-thumb {
+            background-color: #805b02;
+            border: none; /*Removes extra border that FF applies*/
+            border-radius: 0.5rem;
+            border: 1px solid var(--main-color);
+            height: 3em;
+            width: 3em;
+        }
+
+        input[type="range"]:focus::-moz-range-thumb{
+            outline: 3px solid #805b02;
+            outline-offset: 0.125rem;
+        }
+        /*-----------------*/
+
+        .equipment-preferences__chanda {
+            width: 100%;
+            height: 10rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border: 2px solid var(--details-color);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        .equipment-preferences__lights {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .chanda__light {
+            border-radius: 90px;
+            width: 3rem;
+            height: 3rem;
+        }
+        .equipment-preferences__chanda__colors {
+            gap: 1rem !important;
+        }
+        .chanda__input-color {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 10px;
+        }
+        .equipment-preferences__buttons {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        input[type="button"] {
+            font-size: 1.5em;
+            padding: .2em .5em;
+            background: var(--submain-color);
+            color: var(--text-color);
+            border-radius: 10px;
+        }
+        .loader {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: var(--main-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .equipment-preferences__aditional-links {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .equipment-preferences__aditional-links a {
+            color: var(--additional-text-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Лоадер страницы -->
+    <div class="loader" id="loader">
+        <div class="preferences-header">
+            <h1>RPM Blinker</h1>
+        </div>
+    </div>
+    <!-- Разметка страницы -->
+    <div class="container">
+        <div class="preferences-header">
+            <h1>RPM Blinker</h1>
+        </div>
+        <form class="equipment-preferences">
+            <div class="group__header">
+                <h3>Настройка индикации отсечки</h3>
+            </div>
+            <div class="equipment-preferences__input-number-pair">
+                <label for="minRpm">Минимальные обороты:</label>
+                <input
+                        class="equipment-preferences__input-pair__input-number"
+                        id="minRpm"
+                        type="number"
+                        value="1500"
+                />
+            </div>
+            <div class="equipment-preferences__input-number-pair">
+                <label for="maxRpm">Максимальные обороты:</label>
+                <input
+                        class="equipment-preferences__input-pair__input-number"
+                        id="maxRpm"
+                        type="number"
+                        value="7500"
+                />
+            </div>
+            <div class="equipment-preferences__input-slider-pair">
+                <div class="equipment-preferences__input-pair__input-info">
+                    <label for="rpmBrightness">Яркость (индикация):</label>
+                    <span
+                            class="equipment-preferences__input-pair__value"
+                            id="brightness-indication"
+                    >255</span>
+                </div>
+                <input
+                        class="equipment-preferences__input-pair__input"
+                        id="rpmBrightness"
+                        type="range"
+                />
+            </div>
+            <div class="equipment-preferences__input-slider-pair">
+                <div class="equipment-preferences__input-pair__input-info">
+                    <label for="blinkBrightness">Яркость (мигание): </label>
+                    <span
+                            class="equipment-preferences__input-pair__value"
+                            id="brightness-blinking"
+                    >255</span>
+                </div>
+                <input
+                        class="equipment-preferences__input-pair__input"
+                        id="blinkBrightness"
+                        type="range"
+                />
+            </div>
+            <div class="equipment-preferences__input-number-pair">
+                <label for="blinkFrequency">Частота мигания:</label>
+                <input
+                        class="equipment-preferences__input-pair__input-number"
+                        id="blinkFrequency"
+                        type="number"
+                        value="60"
+                />
+            </div>
+            <div class="equipment-preferences__input-number-pair">
+                <label for="blinking-color">Цвет мигания:</label>
+                <input
+                        class="equipment-preferences__input-pair__input-color"
+                        id="blinking-color"
+                        type="color"
+                        value="#ff0000"
+                />
+            </div>
+            <div class="equipment-preferences__chanda">
+                <div class="equipment-preferences__lights" id="lights">
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                    <div class="chanda__light blink-light"></div>
+                </div>
+            </div>
+            <div class="equipment-preferences__buttons">
+                <input type="button" id="test" value="Проверить"/>
+            </div>
+            <div class="group__header">
+                <h3>Настройка цветов оборотов</h3>
+            </div>
+            <div class="equipment-preferences__chanda equipment-preferences__chanda__colors">
+                <input
+                        class="chanda__input-color group1"
+                        id="color1"
+                        type="color"
+                        value="#04ff00"
+                />
+                <input
+                        class="chanda__input-color group2"
+                        id="color2"
+                        type="color"
+                        value="#04ff00"
+                />
+                <input
+                        class="chanda__input-color group3"
+                        id="color3"
+                        type="color"
+                        value="#ffc400"
+                />
+                <input
+                        class="chanda__input-color group4"
+                        id="color4"
+                        type="color"
+                        value="#ffc400"
+                />
+                <input
+                        class="chanda__input-color group5"
+                        id="color5"
+                        type="color"
+                        value="#ff0000"
+                />
+                <input
+                        class="chanda__input-color group5"
+                        id="color6"
+                        type="color"
+                        value="#ff0000"
+                />
+                <input
+                        class="chanda__input-color group4"
+                        id="color7"
+                        type="color"
+                        value="#ffc400"
+                />
+                <input
+                        class="chanda__input-color group3"
+                        id="color8"
+                        type="color"
+                        value="#ffc400"
+                />
+                <input
+                        class="chanda__input-color group2"
+                        id="color9"
+                        type="color"
+                        value="#04ff00"
+                />
+                <input
+                        class="chanda__input-color group1"
+                        border="none"
+                        id="color10"
+                        type="color"
+                        value="#04ff00"
+                />
+            </div>
+            <div class="equipment-preferences__buttons">
+                <input type="button" id="saveButton" style="display: relative" value="Сохранить настройки"/>
+            </div>
+            <div class="equipment-preferences__aditional-links">
+                <a href="http:/192.168.4.1/update">Обновление прошивки</a>
+            </div>
+        </form>
+    </div>
+    <!-- Скрипты страницы -->
+    <script>
+    const REQUEST_URL = 'http://localhost:8000'; // Это базовый урл. Его можно менять на любой на котором находится бек
+    let loader;
+    let watchers = [];
+    let modelValues = {};
+
+    const handleValueChange = (target, event) => {
+        target.value = event.target.value
+    };
+
+    const handler = {
+        get: (target) => {
+            return target.value
+        },
+        set: track
+    };
+
+    async function track (target, prop, value) {
+        const prevValue = target[prop];
+
+        if (prop === 'value')
+            target[prop] = value;
+
+        for (const watcher of watchers) {
+            if (watcher.target === target.name)
+                watcher.callback(value, prevValue);
+        }
+
+        const element = modelValues[target.name];
+        if (element)
+            element.value = target[prop]
+
+        return true;
+    };
+
+    const modelValue = (id, target) => {
+        const element = document.getElementById(id);
+        element.addEventListener('input', (event) => handleValueChange(target, event));
+        target.value = element.value;
+        modelValues[id] = element;
+    }
+    const ref = (val, name) => {
+        return new Proxy({
+            value: val,
+            name
+        },
+        handler
+        );
+    };
+
+    const request = (method, url, requestData=null) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open(method, `${REQUEST_URL}/${url}`, false);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onrearystagechange = () => {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log('Data saved');
+                }
+                else if (xhr.status === 500) {
+                    console.error('Server error');
+                }
+            }
+        }
+
+        try {
+            const dataJson = JSON.stringify(requestData);
+            xhr.send(dataJson);
+            return JSON.parse(xhr.response);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    };
+
+    const hexToRgb = (hex) => {
+        return {
+            r: parseInt(hex.substring(1, 3), 16),
+            g: parseInt(hex.substring(3, 5), 16),
+            b: parseInt(hex.substring(5, 7), 16)
+        }
+    };
+
+    const rgbToHex = ({r = 255,g = 255,b = 255}) => {
+        if (![r, g, b].every(num => num >= 0 && num <= 255)) {
+            throw new Error("Значения RGB должны быть в диапазоне от 0 до 255");
+        }
+        return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
+    };
+
+    const minRpm = ref(null, 'minRpm');
+    const maxRpm = ref(null, 'maxRpm');
+    const rpmBrightness = ref(null, 'rpmBrightness');
+    const blinkBrightness = ref(null, 'blinkBrightness');
+    const blinkFrequency = ref(null, 'blinkFrequency');
+    const blinkingColor = ref(null, 'blinkingColor');
+    const color1 = ref(null, 'color1');
+    const color2 = ref(null, 'color2');
+    const color3 = ref(null, 'color3');
+    const color4 = ref(null, 'color4');
+    const color5 = ref(null, 'color5');
+    const color6 = ref(null, 'color6');
+    const color7 = ref(null, 'color7');
+    const color8 = ref(null, 'color8');
+    const color9 = ref(null, 'color9');
+    const color10 = ref(null, 'color10');
+
+    let blinkInterval;
+
+    const changeBlinkColor = (color) => {
+        const group = document.getElementsByClassName('blink-light');
+        const colorInput = document.getElementById('blinking-color');
+        colorInput.value = color;
+        for (const light of group) {
+            light.style.background = color;
+        }
+    };
+
+    const changeGroupColor = (pikerId, value) => {
+        const piker = document.getElementById(pikerId);
+        piker.value = value;
+    };
+
+    const testBlink = () => {
+        let flag = true;
+        const frequency = blinkFrequency.value;
+
+        if (blinkInterval)
+            clearInterval(blinkInterval);
+
+        const lights = document.getElementById('lights');
+
+        setTimeout(() => {
+            if (blinkInterval)
+                clearInterval(blinkInterval);
+
+            lights.style.opacity = 1;
+
+            return;
+        }, 3000);
+
+        blinkInterval = setInterval(() => {
+            if (flag) {
+                lights.style.opacity = 0;
+            } else {
+                lights.style.opacity = 1;
+            }
+
+            flag = !flag;
+        }, frequency);
+    };
+
+    const sendData = () => {
+        const formData = {
+            initial_rotation: Number(minRpm.value),
+            blink_rotation: Number(maxRpm.value),
+            blink_color: hexToRgb(blinkingColor.value),
+            blink_interval: Number(blinkFrequency.value),
+            brightness_blink: Math.floor(Number(blinkBrightness.value) * 2.55),
+            brightness_indication: Math.floor(Number(rpmBrightness.value) * 2.55),
+            indication_schema_id: 0,
+            indication_colors: [
+                hexToRgb(color1.value),
+                hexToRgb(color2.value),
+                hexToRgb(color3.value),
+                hexToRgb(color4.value),
+                hexToRgb(color5.value),
+                hexToRgb(color6.value),
+                hexToRgb(color7.value),
+                hexToRgb(color8.value),
+                hexToRgb(color9.value),
+                hexToRgb(color10.value)
+            ]
+        };
+
+        request('POST', 'config', formData);
+    };
+
+    const getData = () => {
+        return request('GET', 'config');
+    };
+
+    const setData = (response) => {
+        minRpm.value = response.initial_rotation;
+        maxRpm.value = response.blink_rotation;
+        rpmBrightness.value = Math.floor(response.brightness_indication / 2.55);
+        blinkBrightness.value = Math.floor(response.brightness_blink / 2.55);
+        blinkFrequency.value = response.blink_interval;
+        blinkingColor.value = rgbToHex(response.blink_color);
+        color1.value = rgbToHex(response.indication_colors[0]);
+        color2.value = rgbToHex(response.indication_colors[1]);
+        color3.value = rgbToHex(response.indication_colors[2]);
+        color4.value = rgbToHex(response.indication_colors[3]);
+        color5.value = rgbToHex(response.indication_colors[4]);
+        color6.value = rgbToHex(response.indication_colors[5]);
+        color7.value = rgbToHex(response.indication_colors[6]);
+        color8.value = rgbToHex(response.indication_colors[7]);
+        color9.value = rgbToHex(response.indication_colors[8]);
+        color10.value = rgbToHex(response.indication_colors[9]);
+    };
+
+    watchers.push({
+        target: 'rpmBrightness',
+        callback: (value) => {
+            const elem = document.getElementById('brightness-indication');
+            elem.innerText = value;
+        }
+    });
+
+    watchers.push({
+        target: 'blinkBrightness',
+        callback: (value) => {
+            const elem = document.getElementById('brightness-blinking');
+            elem.innerText = value;
+        }
+    });
+
+    watchers.push({
+        target: 'blinkingColor',
+        callback: (value) => {
+            changeBlinkColor(value);
+        }
+    });
+
+    watchers.push({
+        target: 'blinkingColor',
+        callback: (value) => {
+            changeBlinkColor(value);
+        }
+    });
+
+    watchers.push({
+        target: 'color1',
+        callback: (value, prev) => {
+            changeGroupColor('color10', value);
+            if (value !== prev)
+                color10.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color2',
+        callback: (value, prev) => {
+            changeGroupColor('color9', value);
+            if (value !== prev)
+                color9.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color3',
+        callback: (value, prev) => {
+            changeGroupColor('color8', value);
+            if (value !== prev)
+                color8.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color4',
+        callback: (value, prev) => {
+            changeGroupColor('color7', value);
+            if (value !== prev)
+                color7.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color5',
+        callback: (value, prev) => {
+            changeGroupColor('color6', value);
+            if (value !== prev)
+                color6.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color6',
+        callback: (value, prev) => {
+            changeGroupColor('color5', value);
+            if (value !== prev)
+                color5.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color7',
+        callback: (value, prev) => {
+            changeGroupColor('color4', value);
+            if (value !== prev)
+                color4.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color8',
+        callback: (value, prev) => {
+            changeGroupColor('color3', value);
+            if (value !== prev)
+                color3.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color9',
+        callback: (value, prev) => {
+            changeGroupColor('color2', value);
+            if (value !== prev)
+                color2.value = value;
+        }
+    });
+
+    watchers.push({
+        target: 'color10',
+        callback: (value, prev) => {
+            changeGroupColor('color1', value);
+            if (value !== prev)
+                color1.value = value;
+        }
+    });
+
+    const appMounting = async () => {
+        loader = document.getElementById('loader');
+
+        modelValue('minRpm', minRpm);
+        modelValue('maxRpm', maxRpm);
+
+        modelValue('rpmBrightness', rpmBrightness);
+        modelValue('blinkBrightness', blinkBrightness);
+
+        modelValue('blinkFrequency', blinkFrequency);
+
+        modelValue('blinking-color', blinkingColor);
+
+        modelValue('color1', color1);
+        modelValue('color2', color2);
+        modelValue('color3', color3);
+        modelValue('color4', color4);
+        modelValue('color5', color5);
+        modelValue('color6', color6);
+        modelValue('color7', color7);
+        modelValue('color8', color8);
+        modelValue('color9', color9);
+        modelValue('color10', color10);
+
+        const testButton = document.getElementById('test');
+        testButton.addEventListener('click', testBlink);
+
+        const saveButton = document.getElementById('saveButton');
+        saveButton.addEventListener('click', sendData);
+
+        const response = getData();
+        setData(response);
+    };
+
+    appMounting().then(() => {
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                loader.style.transition = 'opacity .5s ease-out';
+                loader.style.opacity = 0;
+                setTimeout(resolve, 500);
+            }, 500);
+        });
+
+        promise.then(() => {
+            loader.style.display = 'none';
+        });
+    });
+    </script>
+</body>
